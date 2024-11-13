@@ -1,56 +1,51 @@
-class ExposureChecker {
-    constructor(imagePath) {
-      this.imagePath = imagePath;
-    }
-  
-    async getHistogram() {
-      // Load the image and convert it to grayscale to focus on brightness
-      const image = await sharp(this.imagePath)
-        .greyscale()  // Convert to grayscale (brightness only)
-        .raw()  // Get raw pixel data
-        .toBuffer();
-  
-      // Calculate the histogram of pixel values
-      const histogram = this.calculateHistogram(image);
-      return histogram;
-    }
-  
-    calculateHistogram(imageBuffer) {
-      const histogram = Array(256).fill(0); // 256 bins for pixel values (0-255)
-  
-      for (let i = 0; i < imageBuffer.length; i++) {
-        const pixelValue = imageBuffer[i];
+import sharp from 'sharp'; // Ensure sharp is installed using 'npm install sharp'
+
+/* The ExposureClassifier class is being exported in JavaScript. */
+export class ExposureClassifier {
+  constructor(rawImagePath) {
+    this.rawImagePath = rawImagePath; // Path to the raw image file
+  }
+
+  // Function to analyze the exposure of the image
+  /* The `async analyzeImageExposure()` function in the `ExposureClassifier` class is responsible for
+  analyzing the exposure of an image. Here's a breakdown of what the function does: */
+  async analyzeImageExposure() {
+    try {
+      // Read the image and convert it to grayscale
+      const { data, info } = await sharp(this.rawImagePath)
+        .resize({ width: 800 }) // Resize to reduce processing time (optional)
+        .grayscale() // Convert to grayscale
+        .raw()
+        .toBuffer({ resolveWithObject: true });
+
+      // Compute histogram manually
+      const histogram = Array(256).fill(0);
+      for (let i = 0; i < data.length; i++) {
+        const pixelValue = data[i];
         histogram[pixelValue]++;
       }
-  
-      return histogram;
-    }
-  
-    classifyExposure() {
-      return this.getHistogram()
-        .then((histogram) => {
-          const totalPixels = histogram.reduce((acc, val) => acc + val, 0);
-          const underexposedThreshold = 0.2 * totalPixels; // 20% of pixels in dark range
-          const overexposedThreshold = 0.8 * totalPixels; // 80% of pixels in bright range
-  
-          let darkPixels = 0;
-          let brightPixels = 0;
-  
-          // Check the dark (0-63) and bright (192-255) pixel ranges
-          for (let i = 0; i < 64; i++) darkPixels += histogram[i];
-          for (let i = 192; i < 256; i++) brightPixels += histogram[i];
-  
-          if (darkPixels > underexposedThreshold) {
-            return 'Underexposed';
-          } else if (brightPixels > overexposedThreshold) {
-            return 'Overexposed';
-          } else {
-            return 'Well-exposed';
-          }
-        })
-        .catch((err) => {
-          console.error('Error analyzing image:', err);
-          return 'Error';
-        });
+
+      // Analyze exposure
+      const totalPixels = data.length;
+      const mean = histogram.reduce((sum, count, index) => sum + (index * count), 0) / totalPixels;
+
+      // Output histogram (optional)
+      // console.log('Histogram Data:', histogram);
+      console.log('Mean Pixel Value:', mean);
+
+      // Determine exposure based on mean pixel value
+      if (mean < 100) {
+        console.log('Underexposure');
+        return -1; // Underexposed
+      } else if (mean > 150) {
+        console.log('Overexposure');
+        return 1; // Overexposed
+      } else {
+        console.log('Exposure looks OK');
+        return 0; // Proper exposure
+      }
+    } catch (error) {
+      console.error('Error processing image:', error);
     }
   }
+}

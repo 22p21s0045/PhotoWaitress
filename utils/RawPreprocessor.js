@@ -1,8 +1,8 @@
 class RawImagePreprocessor {
     
 
-    constructor(rawFile){
-        this.file = rawFile
+    constructor(imagePath){
+        this.imagePath = imagePath;
         
     }
 
