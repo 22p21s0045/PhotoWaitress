@@ -1,6 +1,6 @@
-import { ExposureClassifier } from "./utils/ExposureChecker.js";
 
+import { RawProcessor } from "./utils/RawProcessor.js";
 const imagePath = './img/input/R0003914.DNG'; // Replace with the actual image path
-const classifier = new ExposureClassifier(imagePath);
+const process = new  RawProcessor(imagePath);
 
-console.log(classifier.analyzeImageExposure());
+console.log(process.exposureCorrection());
