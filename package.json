@@ -5,12 +5,13 @@
   "type": "module",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest",
     "start": "node main.js"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "app-root-path": "^3.1.0",
     "child_process": "^1.0.2",
     "dcraw": "^1.0.3",
     "dotenv": "^16.4.5",

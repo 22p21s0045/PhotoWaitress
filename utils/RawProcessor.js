@@ -1,5 +1,6 @@
 import { ExposureClassifier } from "./ExposureClassifier.js";
-import { exec } from "child_process";
+import { exec , spawn } from "child_process";
+import {dirname , resolve} from "path"
 export class RawProcessor {
     
 
@@ -7,6 +8,9 @@ export class RawProcessor {
         this.imagePath = imagePath;
         this.ExposureClassifier = new ExposureClassifier(imagePath);
     }
+
+
+  
 
     async exposureCorrection() {
         try {
