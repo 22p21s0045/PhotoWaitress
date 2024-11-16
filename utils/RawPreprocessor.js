@@ -15,6 +15,8 @@ export class RawPreprocessor {
 
     const dngConverter = resolve(__rootProject, "libs", "dngconverter.exe")
 
+    // Set option full resulution and multiple file process and set output directory
+
     const args = ["-p2", "-fl", "-mp" , "-d" , dngOutDirectory ]
 
     // Read all files in the input directory
