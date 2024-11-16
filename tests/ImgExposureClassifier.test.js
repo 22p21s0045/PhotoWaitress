@@ -1,3 +1,6 @@
+
+//Test with real image 
+
 import path from 'path';
 import fs from 'fs';
 import { ExposureClassifier } from '../utils/ExposureClassifier'; // Adjust the import if needed
