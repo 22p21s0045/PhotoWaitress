@@ -1,68 +1,61 @@
-import { spawn } from "child_process";
-import { resolve } from "path";
-
-import appRootPath from "app-root-path";
+import { spawn } from "child_process"
+import { resolve } from "path"
+import fs from 'fs'
+import appRootPath from "app-root-path"
 export class RawPreprocessor {
+  constructor(directoryPath) {
+    this.directoryPath = directoryPath
+  }
 
-    constructor(directoryPath){
-        this.directoryPath = directoryPath
+  convertToDng() {
+    const __rootProject = appRootPath.toString()
+
+    const dngOutDirectory = resolve(__rootProject, "img", "dngOut")
+    const inputDirectory = resolve(__rootProject, "img", "input")
+
+    const dngConverter = resolve(__rootProject, "libs", "dngconverter.exe")
+
+    const args = ["-p2", "-fl", "-mp" , "-d" , dngOutDirectory ]
+
+    // Read all files in the input directory
+    try {
+      const files = fs.readdirSync(inputDirectory)
+
+      // Add each file to args
+      files.forEach((file) => {
+        const fullPath = resolve(inputDirectory, file)
+        const stat = fs.statSync(fullPath)
+
+        if (stat.isFile()) {
+          args.push(fullPath)
+        }
+      })
+
+      console.log("Arguments:", args)
+      // Here you can pass the `args` array to spawn or exec the DNG converter
+      // Example:
+      // spawn('path/to/dng-converter', args, { stdio: 'inherit' });
+    } catch (err) {
+      console.error(`Error processing files in ${inputDirectory}:`, err.message)
     }
 
 
-    convertToDng(){
-        
-        const __rootProject = appRootPath.toString()
-        
-        const executableWin = resolve(__rootProject, 'libs', 'dnglab.exe');
+    const dngProcess = spawn(dngConverter, args, { stdio: 'inherit' });
 
-        
+    // Handle process events
+    dngProcess.on('error', (err) => {
+      console.error(`Failed to start process: ${err.message}`);
+    });
 
-        const inputDirectory = resolve(__rootProject, 'img', 'input');
+    dngProcess.on('close', (code) => {
+      if (code === 0) {
+        console.log("DNG conversion completed successfully!");
+      } else {
+        console.error(`DNG conversion failed with exit code: ${code}`);
+      }
+    });
+  } catch (err) {
+    console.error(`Error processing files in ${inputDirectory}:`, err.message);
 
-        const args = ['convert' , inputDirectory, `${resolve(__rootProject, 'img' , 'output' )}` , '-d' ]
-
-        
-        try {
-            // Spawn the process with arguments
-            const winProcess = spawn(executableWin, args);
-          
-            // Handle the process's stdout stream
-            winProcess.stdout.on('data', (data) => {
-              console.log(`stdout: ${data}`);
-            });
-          
-            // Handle the process's stderr stream (errors from the process)
-            winProcess.stderr.on('data', (data) => {
-              console.error(`stderr: ${data}`);
-            });
-          
-            // Handle the process's exit event
-            winProcess.on('close', (code) => {
-              if (code !== 0) {
-                console.error(`Process exited with code ${code}`);
-              } else {
-                console.log('Process completed successfully');
-              }
-            });
-          } catch (error) {
-            // Catch errors if the spawn operation itself fails
-            console.error(`Failed to spawn process: ${error.message}`);
-          }
-
-        try {
-            
-            switch (process.platform){
-                case "win32" :
-                    
-            }
-
-
-        }
-
-        catch(error) {
-
-        }
-
-
-    }
+  }
 }
