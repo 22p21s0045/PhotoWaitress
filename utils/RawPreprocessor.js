@@ -2,12 +2,14 @@ import { spawn } from "child_process"
 import { resolve } from "path"
 import fs from 'fs'
 import appRootPath from "app-root-path"
+import ora from "ora"
 export class RawPreprocessor {
   constructor(directoryPath) {
     this.directoryPath = directoryPath
   }
 
-  convertToDng() {
+  async convertToDng() {
+    const spinner = ora('Converting all images to DNG format for preprocessing ...').start();
     const __rootProject = appRootPath.toString()
 
     const dngOutDirectory = resolve(__rootProject, "img", "dngOut")
@@ -51,8 +53,10 @@ export class RawPreprocessor {
 
     dngProcess.on('close', (code) => {
       if (code === 0) {
+        spinner.succeed()
         console.log("DNG conversion completed successfully!");
       } else {
+        spinner.fail()
         console.error(`DNG conversion failed with exit code: ${code}`);
       }
     });

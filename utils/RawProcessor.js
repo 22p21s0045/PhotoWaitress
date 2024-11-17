@@ -3,7 +3,7 @@ import { exec } from "child_process";
 import { promises as fs } from 'fs';
 import shell from 'shelljs'
 import path, { resolve } from "path";
-
+import ora from "ora"
 import appRootPath from "app-root-path";
 export class RawProcessor {
     constructor(inputDir) {
@@ -12,6 +12,8 @@ export class RawProcessor {
     }
 
     async process(){
+        const spinner = ora('Classify your image with exposure').start();
+
         const __rootProject = appRootPath.toString()
 
         const __input = resolve(__rootProject,'img','dngOut')
@@ -88,10 +90,12 @@ export class RawProcessor {
 
 
             }
+            spinner.succeed()
 
         }
 
         catch(Error){
+            spinner.fail()
             
         }
 

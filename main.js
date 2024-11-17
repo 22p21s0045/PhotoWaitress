@@ -1,15 +1,22 @@
 import { RawProcessor } from "./utils/RawProcessor.js";
 import { RawPreprocessor } from "./utils/RawPreprocessor.js";
-
 import { ExposureClassifier } from "./utils/ExposureClassifier.js";
 
 
 const preProcessor = new RawPreprocessor()
 const rawProcessor = new RawProcessor("./img/dngOut")
 
-// preProcessor.convertToDng()
 
-rawProcessor.process()
+async function main(){
+    await preProcessor.convertToDng()
+
+    await rawProcessor.process()
+}
+
+
+main()
+
+
 
 
 
