@@ -1,2 +1,7 @@
-img/**
+img/dngOut/*
+img/input/*
+img/output/*
+img/temp/goodExposure/*
+img/temp/overExposure/*
+img/temp/underExposure/*
 node_modules
