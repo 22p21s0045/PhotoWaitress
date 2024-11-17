@@ -43,8 +43,11 @@ async moveFile(filePath, destination, counterType) {
     }
   }
   
+  async process(){
+    await this.processImageExposure()
+  }
 
-  async process() {
+  async processImageExposure() {
     const spinner = ora("Classify your image with exposure").start()
 
     const __rootProject = appRootPath.toString()

@@ -37,7 +37,7 @@ export class ExposureClassifier {
       if (mean < 100) {
         console.log('Underexposure');
         return -1; // Underexposed
-      } else if (mean > 150) {
+      } else if (mean > 160) {
         console.log('Overexposure');
         return 1; // Overexposed
       } else {
