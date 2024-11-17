@@ -32,6 +32,18 @@ export class RawProcessor {
     console.log(chalk.blue.bold("\n✨ Processing Complete! ✨\n"));
 }
 
+async moveFile(filePath, destination, counterType) {
+    try {
+      const result = shell.mv(filePath, destination);
+      if (result.code !== 0) throw new Error(result.stderr);
+      this[counterType]++;
+      console.log(chalk.green(`✅ File moved to ${destination}`));
+    } catch (error) {
+      this.handleError(error, `Moving file to ${destination}`);
+    }
+  }
+  
+
   async process() {
     const spinner = ora("Classify your image with exposure").start()
 
@@ -52,68 +64,15 @@ export class RawProcessor {
         const exposureClassifier = new ExposureClassifier(fullPath)
 
         switch (await exposureClassifier.analyzeImageExposure()) {
-          case 0:
-            try {
-              // Use ShellJS's mv() method for moving files
-              const result = shell.mv(fullPath, __tempGood)
-
-              if (result.code !== 0) {
-                // If the mv command fails, log an error
-                console.error(`Error: Failed to move file. ${result.stderr}`)
-              } else {
-                this.goodExposureCount += 1
-
-                // If successful, log the success message
-                console.log("File moved successfully")
-              }
-
-              // Continue with the next iteration if required
-              continue
-            } catch (error) {
-              // Catch any errors that occur
-              console.error(`Error: ${error.message}`)
-            }
-
-          case -1:
-            try {
-              // Use ShellJS's mv() method for moving files
-              const result = shell.mv(fullPath, __tempUnder)
-
-              if (result.code !== 0) {
-                // If the mv command fails, log the error
-                console.error(`Error: Failed to move file. ${result.stderr}`)
-              } else {
-                this.underExposureCount += 1
-                // If successful, log the success message
-                console.log("File moved successfully")
-              }
-
-              // Continue with the next iteration
-              continue
-            } catch (error) {
-              // Catch any unexpected errors
-              console.error(`Error: ${error.message}`)
-            }
-          case 1:
-            try {
-              // Use ShellJS's mv() method for moving files
-              const result = shell.mv(fullPath, __tempOver)
-
-              if (result.code !== 0) {
-                // If the mv command fails, log the error
-                console.error(`Error: Failed to move file. ${result.stderr}`)
-              } else {
-                this.overExposureCount += 1
-                // If successful, log the success message
-                console.log("File moved successfully")
-              }
-
-              // Continue with the next iteration
-              continue
-            } catch (error) {
-              // Catch any unexpected errors
-              console.error(`Error: ${error.message}`)
-            }
+            case 0:
+                await this.moveFile(fullPath, __tempGood, "goodExposureCount");
+                continue;
+              case -1:
+                await this.moveFile(fullPath, __tempUnder, "underExposureCount");
+                continue;
+              case 1:
+                await this.moveFile(fullPath, __tempOver, "overExposureCount");
+                continue;
         }
       }
       spinner.succeed()
