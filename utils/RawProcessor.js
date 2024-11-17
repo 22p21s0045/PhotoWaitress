@@ -1,14 +1,10 @@
 import { ExposureClassifier } from "./ExposureClassifier.js";
 import { exec } from "child_process";
-
 import { promises as fs } from 'fs';
-
-
+import shell from 'shelljs'
 import path, { resolve } from "path";
-import os from "os";
 
 import appRootPath from "app-root-path";
-import { log } from "console";
 export class RawProcessor {
     constructor(inputDir) {
         this.inputDir = inputDir;
@@ -37,24 +33,49 @@ export class RawProcessor {
 
                     case 0:
                         try {
-                            const { stdout } = exec(`copy ${fullPath} ${__tempGood}`);
-                            console.log(`Command Output: ${stdout}`);
-                        } catch (error) {
+                            // Use ShellJS's mv() method for moving files
+                            const result = shell.mv(fullPath, __tempGood);
+                        
+                            if (result.code !== 0) {
+                                // If the mv command fails, log an error
+                                console.error(`Error: Failed to move file. ${result.stderr}`);
+                            } else {
+                                // If successful, log the success message
+                                console.log('File moved successfully');
+                            }
+                        
+                            // Continue with the next iteration if required
+                            continue
+                        }
+                        catch (error) {
+                            // Catch any errors that occur
                             console.error(`Error: ${error.message}`);
                         }
 
                     case -1:
                         try {
-                            const { stdout } = exec(`copy ${fullPath} ${__tempUnder}`);
-                            console.log(`Command Output: ${stdout}`);
+                            // Use ShellJS's mv() method for moving files
+                            const result = shell.mv(fullPath, __tempUnder);
+                        
+                            if (result.code !== 0) {
+                                // If the mv command fails, log the error
+                                console.error(`Error: Failed to move file. ${result.stderr}`);
+                            } else {
+                                // If successful, log the success message
+                                console.log('File moved successfully');
+                            }
+                        
+                            // Continue with the next iteration
+                            continue;
                         } catch (error) {
+                            // Catch any unexpected errors
                             console.error(`Error: ${error.message}`);
                         }
-
                         case 1:
                             try {
-                                const { stdout } = exec(`copy ${fullPath} ${__tempHigh}`);
+                                const { stdout } = exec(`move ${fullPath} ${__tempOver}`);
                                 console.log(`Command Output: ${stdout}`);
+                                continue
                             } catch (error) {
                                 console.error(`Error: ${error.message}`);
                             }
