@@ -11,6 +11,7 @@ async function main(){
     await preProcessor.convertToDng()
 
     await rawProcessor.process()
+    rawProcessor.logStats()
 }
 
 
