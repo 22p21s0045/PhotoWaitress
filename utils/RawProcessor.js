@@ -6,7 +6,9 @@ import path, { resolve } from "path"
 import ora from "ora"
 import appRootPath from "app-root-path"
 import chalk from 'chalk';
-import { log } from "console"
+import {execa} from 'execa'
+
+
 export class RawProcessor {
   constructor(inputDir) {
     this.inputDir = inputDir
@@ -124,8 +126,8 @@ async moveFile(filePath, destination, counterType) {
 
                 // Example command for applying a preset using rawtherapee-cli
                 const command = `rawtherapee-cli -q -Y -p "${presetPath}" -o "${outputPath}" -c "${fullPath}"`;
-
-                const { stdout, stderr } = await exec(command);
+                // TODO: Change this to execute with asynchronus
+                const { stdout, stderr } = await execa(command);
                 if (stderr) {
                     console.log(chalk.red(`Error processing file ${file}: ${stderr}`));
                 } else {
@@ -137,7 +139,6 @@ async moveFile(filePath, destination, counterType) {
         spinner.succeed("Preset applied successfully!");
     } catch (error) {
         spinner.fail("Failed to apply preset.");
-        this.handleError(error, "Applying preset to images");
     }
 }
 

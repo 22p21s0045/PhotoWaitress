@@ -11,7 +11,6 @@ const __rootProject = appRootPath.toString()
 
 async function main(){
     await preProcessor.convertToDng()
-
     await rawProcessor.process({applyPreset:true,presetPath: `${resolve(__rootProject,'img' , 'presets' ,'Portra-Curves.pp3' )}` , outputDir: `${resolve(__rootProject , 'img' , 'output')}`  })
     rawProcessor.logStats()
 }
