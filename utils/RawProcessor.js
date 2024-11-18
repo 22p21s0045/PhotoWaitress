@@ -43,9 +43,22 @@ async moveFile(filePath, destination, counterType) {
     }
   }
   
-  async process(){
-    await this.processImageExposure()
-  }
+  async process({ applyPreset = false, presetPath = null, outputDir = null } = {}) {
+    console.log(chalk.blue.bold("\n🚀 Starting processing workflow...\n"));
+    
+    // Step 1: Classify images based on exposure
+    await this.processImageExposure();
+
+    // Step 2: Apply preset (optional)
+    if (applyPreset && presetPath) {
+        console.log(chalk.blue("\n🎨 Applying preset to images...\n"));
+        await this.applyPreset(presetPath, outputDir);
+    }
+
+    // Step 3: Log statistics
+    this.logStats();
+}
+
 
   async processImageExposure() {
     const spinner = ora("Classify your image with exposure").start()
@@ -83,4 +96,52 @@ async moveFile(filePath, destination, counterType) {
       spinner.fail()
     }
   }
+
+  async applyPreset(presetPath, outputDir) {
+    const spinner = ora("Applying preset to images...").start();
+    const __rootProject = appRootPath.toString()
+    const __inputRoot = resolve(__rootProject, "img", "temp");
+    const __output = resolve(outputDir || this.inputDir, "processed");
+
+    try {
+        // Ensure output directory exists
+        await fs.mkdir(__output, { recursive: true });
+
+        // Subfolders within the "temp" directory
+        const exposureFolders = ['goodExposure', 'overExposure', 'underExposure'];
+
+        // Iterate through the subfolders
+        for (const folder of exposureFolders) {
+            const folderPath = resolve(__inputRoot, folder);
+            const files = await fs.readdir(folderPath);
+
+            for (let file of files) {
+                const fullPath = resolve(folderPath, file);
+                const outputPath = resolve(__output, folder, file);
+
+                // Ensure the folder structure is preserved in the output directory
+                await fs.mkdir(resolve(__output, folder), { recursive: true });
+
+                // Example command for applying a preset using rawtherapee-cli
+                const command = `rawtherapee-cli -q -Y -p "${presetPath}" -o "${outputPath}" -c "${fullPath}"`;
+
+                const { stdout, stderr } = await exec(command);
+                if (stderr) {
+                    console.log(chalk.red(`Error processing file ${file}: ${stderr}`));
+                } else {
+                    console.log(chalk.green(`✅ Preset applied to ${file}: ${stdout}`));
+                }
+            }
+        }
+
+        spinner.succeed("Preset applied successfully!");
+    } catch (error) {
+        spinner.fail("Failed to apply preset.");
+        this.handleError(error, "Applying preset to images");
+    }
+}
+
+
+
+
 }
