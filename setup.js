@@ -1,9 +1,9 @@
-import { RawPreprocessor } from "./utils/RawPreprocessor"
+import { RawPreprocessor } from "./utils/RawPreprocessor.js"
 
-function setUp(){
+function setup(){
     const rawPreProcessor = new RawPreprocessor()
-    rawPreProcessor.initializeFolders()
+    rawPreProcessor.setupProjectStructure()
 }
 
 
-setUp()
+setup()

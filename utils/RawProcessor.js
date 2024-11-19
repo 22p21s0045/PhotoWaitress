@@ -85,6 +85,11 @@ export class RawProcessor {
   } = {}) {
     console.log(chalk.blue.bold("\n🚀 Starting processing workflow...\n"))
 
+    if(presetPath === null || presetPath === ''){
+      const __rootProject = appRootPath.toString()
+      presetPath = resolve(__rootProject,'img','presets','default.pp3')
+    }
+
     // Step 1: Classify images based on exposure
     await this.processImageExposure()
 
