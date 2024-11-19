@@ -7,7 +7,8 @@ import ora from "ora"
 import appRootPath from "app-root-path"
 import chalk from "chalk"
 import { execa } from "execa"
-
+import AdmZip from "adm-zip"
+import { nanoid } from "nanoid"
 export class RawProcessor {
   constructor(inputDir) {
     this.inputDir = inputDir
@@ -99,7 +100,11 @@ export class RawProcessor {
       await this.applyPreset(presetPath, outputDir)
     }
 
-    // Step 3: Log statistics
+    // Step 3: zip file export
+
+    this.zipProcessedFiles()
+
+    // Step 4: Log statistics
     this.logStats()
   }
 
@@ -246,4 +251,30 @@ export class RawProcessor {
       spinner.fail("Failed to apply preset.")
     }
   }
+
+  async zipProcessedFiles(){
+    const __rootProject = appRootPath.toString()
+    const spinner = ora("Exporting files ...").start()
+
+    const zip = new AdmZip()
+    const __processedDirectory = resolve(__rootProject,'img','output','processed')
+
+    const outputZipPath = resolve(__rootProject,'archives',`${nanoid(10)}.zip`)
+    zip.addLocalFolder(__processedDirectory)
+
+    try{
+      
+
+      await zip.writeZipPromise(outputZipPath)
+      spinner.succeed()
+
+    }
+    catch(error){
+      spinner.fail()
+      chalk.red(error)
+    }
+    
+
+  }
+
 }

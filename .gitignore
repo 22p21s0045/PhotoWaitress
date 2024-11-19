@@ -4,4 +4,5 @@ img/output/*
 img/temp/goodExposure/*
 img/temp/overExposure/*
 img/temp/underExposure/*
+archives/*
 node_modules
