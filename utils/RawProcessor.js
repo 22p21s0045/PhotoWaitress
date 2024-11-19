@@ -179,6 +179,18 @@ export class RawProcessor {
     }
 
 
+ /**
+  * The function `applyPreset` processes images in subfolders based on exposure levels using a
+  * specified preset path and outputs the processed images to a specified directory.
+  * @param presetPath - The `presetPath` parameter in the `applyPreset` function refers to the path of
+  * the preset file that will be applied to the images during processing. This preset file contains the
+  * settings and adjustments that will be applied to the images using the `rawtherapee-cli` command
+  * line tool.
+  * @param outputDir - The `outputDir` parameter in the `applyPreset` function represents the directory
+  * where the processed images will be saved after applying the preset. If a value is provided for
+  * `outputDir`, the processed images will be saved in that directory. If no value is provided, the
+  * processed images will be
+  */
   async applyPreset(presetPath, outputDir) {
     const spinner = ora("Applying preset to images...").start()
     const __rootProject = appRootPath.toString()

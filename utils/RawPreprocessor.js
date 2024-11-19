@@ -66,4 +66,40 @@ export class RawPreprocessor {
       console.error(`Error processing files in ${inputDirectory}:`, err.message);
     }
   }
+
+
+   // Method to initialize required folders
+   initializeFolders(folderStructure) {
+    folderStructure.forEach((folderPath) => {
+      if (!fs.existsSync(folderPath)) {
+        try {
+          fs.mkdirSync(folderPath, { recursive: true });
+          console.log(`Folder created: ${folderPath}`);
+        } catch (err) {
+          console.error(`Failed to create folder: ${folderPath}`, err.message);
+          throw err; // Re-throw to allow calling code to handle it
+        }
+      }
+    });
+  }
+
+  async setupProjectStructure() {
+    const __rootProject = appRootPath.toString();
+
+    const folderPaths = [
+      resolve(__rootProject, "img", "dngOut"),
+      resolve(__rootProject, "img", "input"),
+      resolve(__rootProject, "img", "output", "processed", "goodExposure"),
+      resolve(__rootProject, "img", "output", "processed", "overExposure"),
+      resolve(__rootProject, "img", "output", "processed", "underExposure"),
+      resolve(__rootProject, "img", "presets"),
+      resolve(__rootProject, "img", "temp", "goodExposure"),
+      resolve(__rootProject, "img", "temp", "overExposure"),
+      resolve(__rootProject, "img", "temp", "underExposure"),
+    ];
+
+    this.initializeFolders(folderPaths);
+
+    console.log("Project structure initialized successfully!");
+  }
 }
