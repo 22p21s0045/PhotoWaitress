@@ -1,5 +1,4 @@
 import { ExposureClassifier } from "./ExposureClassifier.js"
-import { exec } from "child_process"
 import { promises as fs } from "fs"
 import shell from "shelljs"
 import path, { resolve } from "path"

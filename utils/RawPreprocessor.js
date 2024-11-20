@@ -38,7 +38,7 @@ export class RawPreprocessor {
     const dngConverter = resolve(__rootProject, "libs", "dngconverter.exe");
 
     // Set option full resolution, multiple file processing, and output directory
-    const args = ["-p2", "-fl", "-mp", "-d", dngOutDirectory];
+    const args = ["-p2", "-fl", "-d", dngOutDirectory];
 
     try {
       const files = fs.readdirSync(inputDirectory);
