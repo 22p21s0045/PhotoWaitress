@@ -4,6 +4,6 @@ img/output/*
 img/temp/goodExposure/*
 img/temp/overExposure/*
 img/temp/underExposure/*
-libs/**
+libs/dngconverter.exe
 archives/*
 node_modules
