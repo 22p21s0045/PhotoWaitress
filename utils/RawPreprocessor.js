@@ -96,6 +96,7 @@ export class RawPreprocessor {
       resolve(__rootProject, "img", "temp", "goodExposure"),
       resolve(__rootProject, "img", "temp", "overExposure"),
       resolve(__rootProject, "img", "temp", "underExposure"),
+      resolve(__rootProject, "archives")
     ];
 
     this.initializeFolders(folderPaths);
