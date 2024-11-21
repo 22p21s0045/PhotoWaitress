@@ -4,7 +4,7 @@
 
 This platform is designed to automate the workflow for photographers who find it tedious to manually add presets, export raw files, and manage the entire post-processing routine. Our platform streamlines the process by automatically applying presets to raw images, handling exports, and organizing the workflow, saving photographers valuable time and effort. 
 
-With this automation, photographers can focus more on their creative work and less on repetitive tasks, ensuring a faster and more efficient image processing pipeline. Whether it's adding exposure adjustments, color grading, or exporting files in various formats, this platform takes care of it all, leaving the photographer with more time to focus on their art.
+With this automation, photographers can focus more on their creative work and less on repetitive tasks, ensuring a faster and more efficient image processing pipeline. Whether it's adding exposure adjustments exporting files in various formats, this platform takes care of it all, leaving the photographer with more time to focus on their art.
 
 
 ## Prerequisites
@@ -13,6 +13,19 @@ Before you begin, ensure you have the following installed:
 
 - [Node.js](https://nodejs.org/) (version 20 or higher)
 - [npm](https://www.npmjs.com/) (usually installed along with Node.js)
+
+# System Requirements
+
+| Feature            | Supported OS      |
+|--------------------|-------------------|
+| Platform           | Windows Only 🖥️  |
+| macOS Support      | In Development 🍏  |
+| Linux Support      | Not Supported 🚫   |
+
+**Note:** The platform is currently supported only on Windows 🖥️. macOS support is under development 🍏, and Linux is not supported 🚫 at the moment. Updates will be provided as development progresses.
+
+
+
 
 ## Installation
 
@@ -81,6 +94,10 @@ Follow the steps below to automate the processing of your raw image files.
 3. **Optional: Add Preset for RawTherapee**
    - If you want to use a custom preset, place the `.pp3` preset file in the `./img/presets` directory.
    - Open the `main.js` file and update the preset path to point to your new preset file.
+
+4. **Output Files**
+   - After the processing is complete, the output will be saved in the `./archives` folder.
+   - The processed files will be stored as a ZIP archive.
 
 ---
 
