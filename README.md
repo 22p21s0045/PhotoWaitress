@@ -1,5 +1,7 @@
 # PhotoWaitress
 
+![Alt text](https://img5.pic.in.th/file/secure-sv1/photographer.jpg)
+
 ## Overview
 
 This platform is designed to automate the workflow for photographers who find it tedious to manually add presets, export raw files, and manage the entire post-processing routine. Our platform streamlines the process by automatically applying presets to raw images, handling exports, and organizing the workflow, saving photographers valuable time and effort. 
@@ -87,6 +89,7 @@ Follow the steps below to automate the processing of your raw image files.
 2. **Run the Processing Command**
    - Open your terminal and navigate to the project directory.
    - Run the following command to start processing:
+  
      ```bash
      npm start
      ```
