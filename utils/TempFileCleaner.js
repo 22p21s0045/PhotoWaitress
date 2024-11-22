@@ -14,7 +14,7 @@ export class TempFileCleaner {
             try {
               // Call the recursive delete function
               
-              TempFileCleaner.deleteFilesInFolder(this.tempFolder);
+              // TempFileCleaner.deleteFilesInFolder(this.tempFolder);
               TempFileCleaner.deleteFilesInFolder(this.processedFolder)
               spinner.succeed("Clear temp file successfully")
               
