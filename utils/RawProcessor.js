@@ -8,6 +8,7 @@ import chalk from "chalk"
 import { execa } from "execa"
 import AdmZip from "adm-zip"
 import { nanoid } from "nanoid"
+import { TempFileCleaner } from "./TempFileCleaner.js"
 export class RawProcessor {
   constructor(inputDir) {
     this.inputDir = inputDir
@@ -105,6 +106,9 @@ export class RawProcessor {
 
     // Step 4: Log statistics
     this.logStats()
+
+    // Step 5: Clear temp file
+    TempFileCleaner.clearTemp()
   }
 
   async processImageExposure() {

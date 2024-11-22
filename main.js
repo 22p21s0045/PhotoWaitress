@@ -4,6 +4,7 @@ import { ExposureClassifier } from "./utils/ExposureClassifier.js";
 import appRootPath from "app-root-path";
 import { resolve } from "path";
 import { log } from "console";
+import { TempFileCleaner } from "./utils/TempFileCleaner.js";
 
 const preProcessor = new RawPreprocessor()
 const rawProcessor = new RawProcessor("./img/dngOut")
@@ -15,6 +16,7 @@ async function main() {
     // You can change preset with change this line
     await rawProcessor.process({ applyPreset: true, presetPath: `${resolve(__rootProject,'img','presets','Portra-Curves.pp3')}` , outputDir: `${resolve(__rootProject, 'img', 'output')}` })
 
+    TempFileCleaner.clearTemp()
 }
 
 
