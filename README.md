@@ -1,6 +1,5 @@
 # PhotoWaitress
-
-![Alt text](https://img5.pic.in.th/file/secure-sv1/photographer.jpg)
+![young eye photographer eye](https://img2.pic.in.th/pic/young-eye-photographer-eye.jpg)
 
 ## Overview
 
