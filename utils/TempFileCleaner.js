@@ -2,18 +2,26 @@ import appRootPath from "app-root-path"
 import {resolve} from 'path'
 import path from "path"
 import fs from 'fs'
+import ora, { spinners } from "ora"
 export class TempFileCleaner {
     
-        static tempFolder = resolve(appRootPath.toString() , 'img' , "temp" )  
+        static tempFolder = resolve(appRootPath.toString() , 'img' , "temp" )
+        static processedFolder = resolve(appRootPath.toString() , 'img' , "output" )    
     
 
         static clearTemp() {
+          const spinner = ora("Cleaning temp files ...").start()
             try {
               // Call the recursive delete function
+              
               TempFileCleaner.deleteFilesInFolder(this.tempFolder);
+              TempFileCleaner.deleteFilesInFolder(this.processedFolder)
+              spinner.succeed("Clear temp file successfully")
+              
+              
               console.log("All files in the temp folder (and subfolders) have been cleared.");
             } catch (error) {
-              console.error(`Error clearing temp folder: ${error.message}`);
+              spinner.fail("Fail to clear temp file ")
             }
           }
         
@@ -31,7 +39,6 @@ export class TempFileCleaner {
               } else if (stats.isFile()) {
                 // If it's a file, delete it
                 fs.unlinkSync(filePath);
-                console.log(`Deleted file: ${filePath}`);
               }
             });
           }

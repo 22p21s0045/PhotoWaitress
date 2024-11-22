@@ -15,19 +15,9 @@ async function main() {
     await preProcessor.convertToDng()
     // You can change preset with change this line
     await rawProcessor.process({ applyPreset: true, presetPath: `${resolve(__rootProject,'img','presets','Portra-Curves.pp3')}` , outputDir: `${resolve(__rootProject, 'img', 'output')}` })
-
+    // Clean Temp file
     TempFileCleaner.clearTemp()
 }
 
 
 main()
-
-
-
-
-
-
-
-
-
-// const process = new  RawProcessor(imagePath);
