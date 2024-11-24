@@ -44,7 +44,7 @@ export class ExposureClassifier {
       if (darkRatio > 0.4) {
         console.log('Underexposure detected due to high dark ratio.');
         return -1; // Underexposed
-      } else if (lightRatio > 0.4) {
+      } else if (lightRatio > 0.6) {
         console.log('Overexposure detected due to high light ratio.');
         return 1; // Overexposed
       } else {
