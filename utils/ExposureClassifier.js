@@ -1,14 +1,11 @@
 import sharp from 'sharp'; // Ensure sharp is installed using 'npm install sharp'
 
-/* The ExposureClassifier class is being exported in JavaScript. */
 export class ExposureClassifier {
   constructor(rawImagePath) {
     this.rawImagePath = rawImagePath; // Path to the raw image file
   }
 
   // Function to analyze the exposure of the image
-  /* The `async analyzeImageExposure()` function in the `ExposureClassifier` class is responsible for
-  analyzing the exposure of an image. Here's a breakdown of what the function does: */
   async analyzeImageExposure() {
     try {
       // Read the image and convert it to grayscale
@@ -25,23 +22,33 @@ export class ExposureClassifier {
         histogram[pixelValue]++;
       }
 
-      // Analyze exposure
+      // Analyze exposure using histogram data
       const totalPixels = data.length;
-      const mean = histogram.reduce((sum, count, index) => sum + (index * count), 0) / totalPixels;
 
-      // Output histogram (optional)
-      // console.log('Histogram Data:', histogram);
-      console.log('Mean Pixel Value:', mean);
+      // Thresholds for "dark" and "light" regions
+      const darkThreshold = 50; // Pixels with value <= 50 are considered "dark"
+      const lightThreshold = 200; // Pixels with value >= 200 are considered "light"
 
-      // Determine exposure based on mean pixel value
-      if (mean < 100) {
-        console.log('Underexposure');
+      // Calculate light and dark pixel counts
+      const darkPixels = histogram.slice(0, darkThreshold + 1).reduce((sum, count) => sum + count, 0);
+      const lightPixels = histogram.slice(lightThreshold).reduce((sum, count) => sum + count, 0);
+
+      // Calculate the ratios
+      const darkRatio = darkPixels / totalPixels;
+      const lightRatio = lightPixels / totalPixels;
+
+      console.log('Dark Pixel Ratio:', darkRatio.toFixed(2));
+      console.log('Light Pixel Ratio:', lightRatio.toFixed(2));
+
+      // Determine exposure based on ratios
+      if (darkRatio > 0.4) {
+        console.log('Underexposure detected due to high dark ratio.');
         return -1; // Underexposed
-      } else if (mean > 160) {
-        console.log('Overexposure');
+      } else if (lightRatio > 0.6) {
+        console.log('Overexposure detected due to high light ratio.');
         return 1; // Overexposed
       } else {
-        console.log('Exposure looks OK');
+        console.log('Exposure looks balanced.');
         return 0; // Proper exposure
       }
     } catch (error) {
