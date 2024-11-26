@@ -14,6 +14,17 @@ export class ImageDetailChecker {
     this.outputFolderPath = resolve(appRootPath.toString(),'tests','img' , 'imageDetailTest','debug')
   }
 
+  async getResult(){
+
+    const isPeopleClosingEyes = await this.checkClosedEyes();
+
+    return {
+      isPeopleClosingEyes,
+    };
+
+    
+  }
+
   // Load models
   async loadModels() {
     await faceapi.nets.ssdMobilenetv1.loadFromDisk(this.modelPath);
