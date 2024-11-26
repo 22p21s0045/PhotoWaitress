@@ -20,6 +20,7 @@
     "dotenv": "^16.4.5",
     "execa": "^9.5.1",
     "exiftool-vendored": "^29.0.0",
+    "face-api.js": "^0.22.2",
     "nanoid": "^5.0.8",
     "ollama": "^0.5.10",
     "ora": "^8.1.1",
