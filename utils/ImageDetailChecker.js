@@ -25,6 +25,50 @@ export class ImageDetailChecker {
     
   }
 
+
+  async processDirectory(directoryPath) {
+    // Load models once for efficiency
+    await this.loadModels();
+
+    const results = [];
+
+    const traverseDirectory = async (currentPath) => {
+      const entries = fs.readdirSync(currentPath, { withFileTypes: true });
+
+      for (const entry of entries) {
+        const entryPath = path.join(currentPath, entry.name);
+
+        if (entry.isDirectory()) {
+          // Recursively process subdirectories
+          await traverseDirectory(entryPath);
+        } else if (entry.isFile() && entry.name.match(/\.(jpg|jpeg|png)$/i)) {
+          console.log(`Processing image: ${entryPath}`);
+
+          try {
+            // Set the imagePath dynamically and check for closed eyes
+            this.imagePath = entryPath;
+
+            const isPeopleClosingEyes = await this.checkClosedEyes();
+
+            results.push({
+              filePath: entryPath,
+              isPeopleClosingEyes,
+            });
+          } catch (error) {
+            console.error(`Error processing ${entryPath}:`, error);
+          }
+        } else {
+          console.log(`Skipping non-image file: ${entryPath}`);
+        }
+      }
+    };
+
+    // Start traversing from the root directory
+    await traverseDirectory(directoryPath);
+
+    return results;
+  }
+
   // Load models
   async loadModels() {
     await faceapi.nets.ssdMobilenetv1.loadFromDisk(this.modelPath);

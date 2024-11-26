@@ -9,6 +9,8 @@ import { execa } from "execa"
 import AdmZip from "adm-zip"
 import { nanoid } from "nanoid"
 import { TempFileCleaner } from "./TempFileCleaner.js"
+import {ImageDetailChecker} from './ImageDetailChecker.js'
+
 export class RawProcessor {
   constructor(inputDir) {
     this.inputDir = inputDir
@@ -99,12 +101,17 @@ export class RawProcessor {
       console.log(chalk.blue("\n🎨 Applying preset to images...\n"))
       await this.applyPreset(presetPath, outputDir)
     }
+    // Step 3: check detail in image
+    const imageDetailChecker = new ImageDetailChecker()
+    await imageDetailChecker.processDirectory(resolve(appRootPath.toString(), 'img', 'output' , 'processed'))
 
-    // Step 3: zip file export
+
+
+    // Step 4: zip file export
 
     this.zipProcessedFiles()
 
-    // Step 4: Log statistics
+    // Step 5: Log statistics
     this.logStats()
 
     // Step 5: Clear temp file
@@ -279,6 +286,8 @@ export class RawProcessor {
     
 
   }
+
+
 
   
 
