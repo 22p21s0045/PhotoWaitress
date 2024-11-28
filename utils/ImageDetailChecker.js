@@ -134,7 +134,6 @@ export class ImageDetailChecker {
     const out = fs.createWriteStream(outputPath);
     const stream = canvas.createJPEGStream();
     stream.pipe(out);
-    out.on("finish", () => console.log(`Saved output to ${outputPath}`));
 
     return hasClosedEyes;
   }

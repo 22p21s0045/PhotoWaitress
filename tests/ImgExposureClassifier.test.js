@@ -35,7 +35,7 @@ function getImageFilesFromFolder(folderPath) {
 
 describe('ExposureClassifier with real image', () => {
   const __rootProject = appRootPath.toString();
-  const imageFolder = path.join(__rootProject, 'tests', 'img'); // Root folder where your subfolders are located
+  const imageFolder = path.join(__rootProject, 'tests', 'img','exposureTest'); // Root folder where your subfolders are located
   const imageFiles = getImageFilesFromFolder(imageFolder);
 
   it('should find some image files', () => {
