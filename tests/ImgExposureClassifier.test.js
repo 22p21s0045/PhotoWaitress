@@ -6,6 +6,7 @@ import fs from 'fs';
 import { ExposureClassifier } from '../utils/ExposureClassifier'; // Adjust the import if needed
 import appRootPath from 'app-root-path';
 
+
 // Helper function to run the analysis and check the result
 async function testExposure(imagePath) {
   const classifier = new ExposureClassifier(imagePath);
