@@ -10,7 +10,6 @@ import AdmZip from "adm-zip"
 import { nanoid } from "nanoid"
 import { TempFileCleaner } from "./TempFileCleaner.js"
 import {ImageDetailChecker} from './ImageDetailChecker.js'
-
 export class RawProcessor {
   constructor(inputDir) {
     this.inputDir = inputDir
