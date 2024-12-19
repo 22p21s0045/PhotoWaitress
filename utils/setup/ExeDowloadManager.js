@@ -160,5 +160,5 @@ async setupDngConverter() {
 }
 
 
-const manager = new ExeDowloadManager()
-manager.setupDngConverter()
+// const manager = new ExeDowloadManager()
+// manager.setupDngConverter()

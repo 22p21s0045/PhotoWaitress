@@ -3,7 +3,6 @@ import crypto from 'crypto'
 import appRootPath from 'app-root-path';
 import dotenv from 'dotenv';
 import { resolve } from 'path';
-import { log } from 'console';
 dotenv.config();
 
 // Known checksums for files
@@ -30,22 +29,8 @@ function calculateChecksum(filePath) {
 }
 
 
-// files.forEach( async ({path,checksum}) => {
-//   const calculatedChecksum = await calculateChecksum(path);
-//   console.log(checksum);
-//   console.log(calculatedChecksum);
-
-  
-  
-// } )
-
-
-
 describe('File Integrity Check', () => {
-  files.forEach(({ path, checksum }) => {
-
-    console.log(checksum);
-    
+  files.forEach(({ path, checksum }) => {    
     test(`Checksum for ${path} matches`, async () => {
       const calculatedChecksum = await calculateChecksum(path);
       expect(calculatedChecksum).toBe(
