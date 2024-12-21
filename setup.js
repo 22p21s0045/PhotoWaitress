@@ -1,8 +1,16 @@
 import { RawPreprocessor } from "./utils/RawPreprocessor.js"
+import { ExeDowloadManager } from "./utils/setup/ExeDowloadManager.js"
 
-function setup(){
+async function setup(){
+    const manager = new ExeDowloadManager()
     const rawPreProcessor = new RawPreprocessor()
-    rawPreProcessor.setupProjectStructure()
+    
+    try {
+       await rawPreProcessor.setupProjectStructure()
+       await manager.setupDngConverter()
+    } catch (error) {
+        console.error("Setup failed:", error)
+    }
 }
 
 

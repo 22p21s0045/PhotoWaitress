@@ -6,6 +6,7 @@ import fs from 'fs';
 import { ExposureClassifier } from '../utils/ExposureClassifier'; // Adjust the import if needed
 import appRootPath from 'app-root-path';
 
+
 // Helper function to run the analysis and check the result
 async function testExposure(imagePath) {
   const classifier = new ExposureClassifier(imagePath);
@@ -35,7 +36,7 @@ function getImageFilesFromFolder(folderPath) {
 
 describe('ExposureClassifier with real image', () => {
   const __rootProject = appRootPath.toString();
-  const imageFolder = path.join(__rootProject, 'tests', 'img'); // Root folder where your subfolders are located
+  const imageFolder = path.join(__rootProject, 'tests', 'img','exposureTest'); // Root folder where your subfolders are located
   const imageFiles = getImageFilesFromFolder(imageFolder);
 
   it('should find some image files', () => {
