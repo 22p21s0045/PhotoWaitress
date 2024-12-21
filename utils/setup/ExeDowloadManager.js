@@ -7,6 +7,7 @@ import appRootPath from "app-root-path"
 import { resolve } from "path"
 import path from "path";
 import { createHash } from 'crypto';
+import chalk from "chalk";
 dotenv.config()
 export class ExeDowloadManager {
 
@@ -102,8 +103,6 @@ export class ExeDowloadManager {
   /* The `async fileExists(path)` function is checking whether a file exists at the specified `path`.
   Here's a breakdown of what the function does: */
   async fileExists(path) {
-
-    console.log(fs.existsSync(path));
     
     if(fs.existsSync(path)){
         return true
@@ -141,15 +140,14 @@ async setupDngConverter() {
   const expectedChecksum = process.env.DNG_CONVERTER_CHECKSUM;
 
   if (await this.fileExists(resolve(__PATH_LIB, 'dngconverter.exe'))) {
-      console.log("DNG converter already exists.");
       const filePath = resolve(__PATH_LIB, 'dngconverter.exe');
       
       // Verify checksum
       const isValid = await this.verifyChecksum(filePath, expectedChecksum);
       if (isValid) {
-          console.log("Checksum is valid.");
+        console.log(chalk.green("✔ DNG converter already exists."));
       } else {
-          console.log("Checksum is invalid. Redownloading the file...");
+         console.log(chalk.yellow("⚠️ Checksum is invalid. Redownloading the file..."));
           await this.getFile(dngConverter_URL, __PATH_LIB, 'dngconverter.exe');
       }
   } else {

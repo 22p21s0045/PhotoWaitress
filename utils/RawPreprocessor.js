@@ -3,7 +3,7 @@ import { resolve } from "path";
 import fs from 'fs';
 import appRootPath from "app-root-path";
 import ora from "ora";
-
+import chalk from "chalk";
 export class RawPreprocessor {
   constructor(directoryPath) {
     this.directoryPath = directoryPath;
@@ -101,6 +101,6 @@ export class RawPreprocessor {
 
     this.initializeFolders(folderPaths);
 
-    console.log("Project structure initialized successfully!");
+    console.log(chalk.green("✔ Project structure initialized successfully!"));
   }
 }
